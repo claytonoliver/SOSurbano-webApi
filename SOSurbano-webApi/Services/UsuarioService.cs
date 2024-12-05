@@ -10,7 +10,7 @@ namespace SOSurbano_webApi.Services
         private readonly IUsuarioRepository _usuarioRepository;
         public UsuarioService(IUsuarioRepository repository)
         {
-            _repository = repository;
+            _usuarioRepository = repository;
         }
 
         public async Task<UsuarioModel> GetUsuarioByIdAsync(int id)
