@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
@@ -17,7 +18,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ChamadoModel>> GetChamadoById(int id)
+        public async Task<ActionResult<ChamadoModel>> GetChamadoById(ObjectId id)
         {
             var chamado = await _chamadoService.GetChamadoByIdAsync(id);
             if (chamado == null)
@@ -42,7 +43,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateChamado(int id, ChamadoModel chamado)
+        public async Task<IActionResult> UpdateChamado(ObjectId id, ChamadoModel chamado)
         {
             if (id != chamado.Id)
             {
@@ -53,7 +54,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteChamado(int id)
+        public async Task<IActionResult> DeleteChamado(ObjectId id)
         {
             await _chamadoService.DeleteChamadoAsync(id);
             return NoContent();
