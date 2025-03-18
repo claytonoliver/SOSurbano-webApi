@@ -39,15 +39,10 @@ builder.Services.AddSingleton<MongoDbContext>();
 
 
 //Registro de Dependências (Services e Repositories)
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<ITipoDeOcorrenciaService, TipoDeOcorrenciaService>();
-builder.Services.AddScoped<IStatusServicoService, StatusServicoService>();
 builder.Services.AddScoped<IStatusChamadoService, StatusChamadoService>();
-builder.Services.AddScoped<IHistoricoServicoStatusService, HistoricoServicoStatusService>();
-builder.Services.AddScoped<IHistoricoOcorrenciaService, HistoricoOcorrenciaService>();
 builder.Services.AddScoped<IChamadoService, ChamadoService>();
 
 // Registro da Configuração do JWT

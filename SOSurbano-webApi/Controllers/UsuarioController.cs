@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using SosUrbano.Application.DTOs;
+using SosUrbano.Domain.Enums;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
@@ -57,8 +58,9 @@ namespace SOSurbano_webApi.Controllers
                 DataNascimento = usuario.DataNascimento,
                 Senha = usuario.Senha,
                 CellPhone = usuario.CellPhone,
-                RoleId = usuario.RoleId,
-                Ativo = usuario.Ativo
+                RoleId = (RoleEnum)usuario.RoleId,
+                Ativo = usuario.Ativo,
+                Genero = usuario.Genero
             };
 
             await _usuarioService.AddAsync(novoUsuario);

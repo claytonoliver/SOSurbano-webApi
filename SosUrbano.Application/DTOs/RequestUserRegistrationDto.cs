@@ -1,4 +1,6 @@
-﻿namespace SosUrbano.Application.DTOs
+﻿using SosUrbano.Domain.Enums;
+
+namespace SosUrbano.Application.DTOs
 {
     public class RequestUserRegistrationDto
     {
@@ -10,5 +12,6 @@
         public string CellPhone { get; set; } = string.Empty;
         public int RoleId { get; set; }
         public bool Ativo { get; set; }
+        public string Genero { get; set; } = string.Empty;
     }
 }
