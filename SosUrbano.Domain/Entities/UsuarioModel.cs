@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using SosUrbano.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SOSurbano_webApi.Model
@@ -17,7 +18,8 @@ namespace SOSurbano_webApi.Model
         public DateTime DataNascimento { get; set; }
         public string Senha { get; set; } = string.Empty;
         public string CellPhone { get; set; } = string.Empty;
-        public int RoleId { get; set; }
+        public RoleEnum RoleId { get; set; }
         public bool Ativo { get; set; }
+        public string Genero { get; set; } = string.Empty;
     }
 }

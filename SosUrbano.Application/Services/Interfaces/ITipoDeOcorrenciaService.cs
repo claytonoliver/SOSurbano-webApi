@@ -1,13 +1,14 @@
-﻿using SOSurbano_webApi.Model;
+﻿using MongoDB.Bson;
+using SOSurbano_webApi.Model;
 
 namespace SOSurbano_webApi.Services.Interfaces
 {
     public interface ITipoDeOcorrenciaService
     {
-        Task<TipoDeOcorrenciaModel> GetTipoDeOcorrenciaByIdAsync(int id);
-        Task<IEnumerable<TipoDeOcorrenciaModel>> GetAllTiposDeOcorrenciaAsync();
-        Task AddTipoDeOcorrenciaAsync(TipoDeOcorrenciaModel tipoDeOcorrencia);
-        Task UpdateTipoDeOcorrenciaAsync(TipoDeOcorrenciaModel tipoDeOcorrencia);
-        Task DeleteTipoDeOcorrenciaAsync(int id);
+        Task AddAsync(TipoDeOcorrenciaModel tipoDeOcorrencia);
+        Task DeleteAsync(ObjectId id);
+        Task<IEnumerable<TipoDeOcorrenciaModel>> GetAllAsync();
+        Task<TipoDeOcorrenciaModel> GetByIdAsync(ObjectId id);
+        Task UpdateAsync(ObjectId id, TipoDeOcorrenciaModel tipoDeOcorrencia);
     }
 }

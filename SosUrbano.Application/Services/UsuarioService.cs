@@ -1,61 +1,65 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using SosUrbano.Application.DTOs;
+using SosUrbano.Application.Services;
+using SosUrbano.Domain.Entities;
 using SOSurbano_webApi.Data.Context;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace SOSurbano_webApi.Services
 {
-    public class UsuarioService : IUsuarioService
+    public class UsuarioService : BaseMongoService<UsuarioModel>, IUsuarioService
     {
         private readonly IMongoCollection<UsuarioModel> _usuarios;
-        public UsuarioService(MongoDbContext context)
+        private readonly JwtSettingsModel _jwtSettings;
+        public UsuarioService(IMongoDatabase database, MongoDbContext context, IOptions<JwtSettingsModel> jwtSettings) : base(database, "SOU_Usuario")
         {
-            _usuarios = context.GetCollection<UsuarioModel>("SOU_Usuarios");
+            _usuarios = context.GetCollection<UsuarioModel>("SOU_Usuario");
+            _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task UserRegisterAsync(RequestUserRegistrationDto usuario)
+        public async Task<string> Authenticate(RequestLoginDTO usuario)
         {
-            var user = new UsuarioModel
+            var usuarioAutenticado = await _usuarios.Find(u => u.CPF == usuario.CPF).FirstOrDefaultAsync();
+            return GenerateJwtToken(usuarioAutenticado);
+        }
+
+        private string GenerateJwtToken(UsuarioModel user)
+        {
+
+            byte[] secretKey = Convert.FromBase64String(_jwtSettings.Secret);
+            var securityKey = new SymmetricSecurityKey(secretKey);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+
+            var claims = new List<Claim>
             {
-                Id = ObjectId.GenerateNewId(),
-                Nome = usuario.Nome,
-                Email = usuario.Email,
-                CPF = usuario.CPF,
-                DataNascimento = usuario.DataNascimento,
-                Senha = usuario.Senha,
-                CellPhone = usuario.CellPhone,
-                RoleId = usuario.RoleId,
-                Ativo = usuario.Ativo
+                new Claim(ClaimTypes.Name, user.Nome),
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+                new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString())
             };
 
-            await _usuarios.InsertOneAsync(user);
-        }
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
+                SigningCredentials = credentials
+            };
 
-        public Task DeleteUsuarioAsync(ObjectId id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<IEnumerable<UsuarioModel>> GetAllUsuariosAsync()
-        {
-            return await _usuarios.Find(_ => true).ToListAsync();
-        }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
-        public async Task<UsuarioModel> GetUsuarioByIdAsync(ObjectId id)
-        {
-            return await _usuarios.Find(u => u.Id == id).FirstOrDefaultAsync();
-        }
-
-        public Task UpdateUsuarioAsync(UsuarioModel usuario)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<UsuarioModel> Authenticate(RequestLoginDTO usuario)
-        {
-            return await _usuarios.Find(u => u.CPF.Equals(usuario.CPF) && u.Senha.Equals(usuario.Senha)).FirstOrDefaultAsync();
+            return tokenHandler.WriteToken(securityToken);
         }
     }
+
 }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
     public class TipoDeOcorrenciaController : ControllerBase
@@ -19,14 +22,14 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TipoDeOcorrenciaModel>>> GetTiposDeOcorrencia()
         {
-            var tiposDeOcorrencia = await _tipoDeOcorrenciaService.GetAllTiposDeOcorrenciaAsync();
+            var tiposDeOcorrencia = await _tipoDeOcorrenciaService.GetAllAsync();
             return Ok(tiposDeOcorrencia);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TipoDeOcorrenciaModel>> GetTipoDeOcorrenciaById(int id)
+        public async Task<ActionResult<TipoDeOcorrenciaModel>> GetTipoDeOcorrenciaById(ObjectId id)
         {
-            var tipoDeOcorrencia = await _tipoDeOcorrenciaService.GetTipoDeOcorrenciaByIdAsync(id);
+            var tipoDeOcorrencia = await _tipoDeOcorrenciaService.GetByIdAsync(id);
 
             if (tipoDeOcorrencia == null)
             {
@@ -39,26 +42,26 @@ namespace SOSurbano_webApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TipoDeOcorrenciaModel>> AddTipoDeOcorrencia(TipoDeOcorrenciaModel tipoDeOcorrencia)
         {
-            await _tipoDeOcorrenciaService.AddTipoDeOcorrenciaAsync(tipoDeOcorrencia);
+            await _tipoDeOcorrenciaService.AddAsync(tipoDeOcorrencia);
             return Created();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTipoDeOcorrencia(int id, TipoDeOcorrenciaModel tipoDeOcorrencia)
+        public async Task<IActionResult> UpdateTipoDeOcorrencia(ObjectId id, TipoDeOcorrenciaModel tipoDeOcorrencia)
         {
             if (id != tipoDeOcorrencia.Id)
             {
                 return BadRequest();
             }
 
-            await _tipoDeOcorrenciaService.UpdateTipoDeOcorrenciaAsync(tipoDeOcorrencia);
+            await _tipoDeOcorrenciaService.UpdateAsync(id, tipoDeOcorrencia);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTipoDeOcorrencia(int id)
+        public async Task<IActionResult> DeleteTipoDeOcorrencia(ObjectId id)
         {
-            await _tipoDeOcorrenciaService.DeleteTipoDeOcorrenciaAsync(id);
+            await _tipoDeOcorrenciaService.DeleteAsync(id);
             return NoContent();
         }
     }

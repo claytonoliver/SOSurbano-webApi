@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
     public class VeiculoController : ControllerBase
@@ -19,14 +21,14 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VeiculoModel>>> GetVeiculos()
         {
-            var veiculos = await _veiculoService.GetAllVeiculosAsync();
+            var veiculos = await _veiculoService.GetAllAsync();
             return Ok(veiculos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<VeiculoModel>> GetVeiculoById(int id)
+        public async Task<ActionResult<VeiculoModel>> GetVeiculoById(ObjectId id)
         {
-            var veiculo = await _veiculoService.GetVeiculoByIdAsync(id);
+            var veiculo = await _veiculoService.GetByIdAsync(id);
 
             if (veiculo == null)
             {
@@ -39,26 +41,26 @@ namespace SOSurbano_webApi.Controllers
         [HttpPost]
         public async Task<ActionResult<VeiculoModel>> AddVeiculo(VeiculoModel veiculo)
         {
-            await _veiculoService.AddVeiculoAsync(veiculo);
+            await _veiculoService.AddAsync(veiculo);
             return CreatedAtAction(nameof(GetVeiculoById), new { id = veiculo.Id }, veiculo);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVeiculo(int id, VeiculoModel veiculo)
+        public async Task<IActionResult> UpdateVeiculo(ObjectId id, VeiculoModel veiculo)
         {
             if (id != veiculo.Id)
             {
                 return BadRequest();
             }
 
-            await _veiculoService.UpdateVeiculoAsync(veiculo);
+            await _veiculoService.UpdateAsync(id, veiculo);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVeiculo(int id)
+        public async Task<IActionResult> DeleteVeiculo(ObjectId id)
         {
-            await _veiculoService.DeleteVeiculoAsync(id);
+            await _veiculoService.DeleteAsync(id);
             return NoContent();
         }
     }
