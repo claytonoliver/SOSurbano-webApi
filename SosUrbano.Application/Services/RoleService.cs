@@ -1,33 +1,15 @@
-﻿using SOSurbano_webApi.Model;
+﻿using MongoDB.Driver;
+using SosUrbano.Application.Services;
+using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Services
 {
-    public class RoleService : IRoleService
+    public class RoleService : BaseMongoService<RoleModel>, IRoleService
     {
-        public Task AddRoleAsync(RoleModel role)
+        public RoleService(IMongoDatabase database) : base(database, "SOU_Role")
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteRoleAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<RoleModel>> GetAllRolesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RoleModel> GetRoleByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateRoleAsync(RoleModel role)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

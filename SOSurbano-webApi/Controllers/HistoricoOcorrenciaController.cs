@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
@@ -17,9 +18,9 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HistoricoOcorrenciaModel>> GetHistoricoOcorrencia(int id)
+        public async Task<ActionResult<HistoricoOcorrenciaModel>> GetHistoricoOcorrencia(ObjectId id)
         {
-            var historicoOcorrencia = await _historicoOcorrenciaService.GetHistoricoOcorrenciaByIdAsync(id);
+            var historicoOcorrencia = await _historicoOcorrenciaService.GetByIdAsync(id);
 
             if (historicoOcorrencia == null)
             {
@@ -32,39 +33,39 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HistoricoOcorrenciaModel>>> GetAllHistoricoOcorrencias()
         {
-            var historicoOcorrencias = await _historicoOcorrenciaService.GetAllHistoricoOcorrenciasAsync();
+            var historicoOcorrencias = await _historicoOcorrenciaService.GetAllAsync();
             return Ok(historicoOcorrencias);
         }
 
         [HttpPost]
         public async Task<ActionResult<HistoricoOcorrenciaModel>> PostHistoricoOcorrencia(HistoricoOcorrenciaModel historicoOcorrencia)
         {
-            await _historicoOcorrenciaService.AddHistoricoOcorrenciaAsync(historicoOcorrencia);
+            await _historicoOcorrenciaService.AddAsync(historicoOcorrencia);
             return Created();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHistoricoOcorrencia(int id, HistoricoOcorrenciaModel historicoOcorrencia)
+        public async Task<IActionResult> PutHistoricoOcorrencia(ObjectId id, HistoricoOcorrenciaModel historicoOcorrencia)
         {
             if (id != historicoOcorrencia.IdOcorrencia)
             {
                 return BadRequest();
             }
 
-            await _historicoOcorrenciaService.UpdateHistoricoOcorrenciaAsync(historicoOcorrencia);
+            await _historicoOcorrenciaService.UpdateAsync(id, historicoOcorrencia);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHistoricoOcorrencia(int id)
+        public async Task<IActionResult> DeleteHistoricoOcorrencia(ObjectId id)
         {
-            var historicoOcorrencia = await _historicoOcorrenciaService.GetHistoricoOcorrenciaByIdAsync(id);
+            var historicoOcorrencia = await _historicoOcorrenciaService.GetByIdAsync(id);
             if (historicoOcorrencia == null)
             {
                 return NotFound();
             }
 
-            await _historicoOcorrenciaService.DeleteHistoricoOcorrenciaAsync(id);
+            await _historicoOcorrenciaService.DeleteAsync(id);
             return NoContent();
         }
     }

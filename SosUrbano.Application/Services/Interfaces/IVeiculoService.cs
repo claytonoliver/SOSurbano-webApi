@@ -1,13 +1,14 @@
-﻿using SOSurbano_webApi.Model;
+﻿using MongoDB.Bson;
+using SOSurbano_webApi.Model;
 
 namespace SOSurbano_webApi.Services.Interfaces
 {
     public interface IVeiculoService
     {
-        Task<VeiculoModel> GetVeiculoByIdAsync(int id);
-        Task<IEnumerable<VeiculoModel>> GetAllVeiculosAsync();
-        Task AddVeiculoAsync(VeiculoModel veiculo);
-        Task UpdateVeiculoAsync(VeiculoModel veiculo);
-        Task DeleteVeiculoAsync(int id);
+        Task AddAsync(VeiculoModel veiculo);
+        Task DeleteAsync(ObjectId id);
+        Task<IEnumerable<VeiculoModel>> GetAllAsync();
+        Task<VeiculoModel> GetByIdAsync(ObjectId id);
+        Task UpdateAsync(ObjectId id, VeiculoModel veiculo);
     }
 }

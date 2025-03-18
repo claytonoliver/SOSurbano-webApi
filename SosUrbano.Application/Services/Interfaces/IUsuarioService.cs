@@ -6,11 +6,11 @@ namespace SOSurbano_webApi.Services.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<UsuarioModel> GetUsuarioByIdAsync(ObjectId id);
-        Task<IEnumerable<UsuarioModel>> GetAllUsuariosAsync();
-        Task UserRegisterAsync(RequestUserRegistrationDto usuario);
-        Task UpdateUsuarioAsync(UsuarioModel usuario);
-        Task DeleteUsuarioAsync(ObjectId id);
-        Task<UsuarioModel> Authenticate(RequestLoginDTO usuario);
+        Task AddAsync(UsuarioModel usuario);
+        Task DeleteAsync(ObjectId id);
+        Task<IEnumerable<UsuarioModel>> GetAllAsync();
+        Task<UsuarioModel> GetByIdAsync(ObjectId id);
+        Task UpdateAsync(ObjectId id, UsuarioModel usuario);
+        Task<string> Authenticate(RequestLoginDTO usuario);
     }
 }

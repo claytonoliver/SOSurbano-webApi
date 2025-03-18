@@ -12,8 +12,7 @@ namespace SOSurbano_webApi.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string UsuarioId { get; set; } = string.Empty;
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string StatusChamadoId { get; set; } = string.Empty;
+        public string StatusChamado { get; set; } = string.Empty;
 
         [BsonElement("dataChamado")]
         public DateTime DataChamado { get; set; }
@@ -26,5 +25,8 @@ namespace SOSurbano_webApi.Model
 
         [BsonElement("longitude")]
         public double Longitude { get; set; }
+
+        [BsonElement("status")]
+        public int Status { get; set; }
     }
 }

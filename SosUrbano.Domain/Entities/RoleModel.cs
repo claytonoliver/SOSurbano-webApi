@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace SOSurbano_webApi.Model
 {
-    [Table("SOU_ROLE")]
     public class RoleModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Descricao { get; set; }
-        public string Nome { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId Id { get; set; }
+        public string Descricao { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
     }
 }

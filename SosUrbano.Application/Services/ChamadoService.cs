@@ -1,34 +1,15 @@
-﻿using MongoDB.Bson;
+﻿using MongoDB.Driver;
+using SosUrbano.Application.Services;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Services
 {
-    public class ChamadoService : IChamadoService
+    public class ChamadoService : BaseMongoService<ChamadoModel>, IChamadoService
     {
-        Task IChamadoService.AddChamadoAsync(ChamadoModel chamado)
+        public ChamadoService(IMongoDatabase database) : base(database, "SOU_Chamado")
         {
-            throw new NotImplementedException();
-        }
 
-        Task IChamadoService.DeleteChamadoAsync(ObjectId id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<ChamadoModel>> IChamadoService.GetAllChamadosAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ChamadoModel> IChamadoService.GetChamadoByIdAsync(ObjectId id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IChamadoService.UpdateChamadoAsync(ChamadoModel chamado)
-        {
-            throw new NotImplementedException();
         }
     }
 }

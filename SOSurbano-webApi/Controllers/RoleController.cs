@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
@@ -17,9 +20,9 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoleByIdAsync(int id)
+        public async Task<IActionResult> GetRoleByIdAsync(ObjectId id)
         {
-            var role = await _roleService.GetRoleByIdAsync(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
@@ -30,7 +33,7 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRolesAsync()
         {
-            var roles = await _roleService.GetAllRolesAsync();
+            var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
 
@@ -42,38 +45,38 @@ namespace SOSurbano_webApi.Controllers
                 return BadRequest("Role cannot be null.");
             }
 
-            await _roleService.AddRoleAsync(role);
+            await _roleService.AddAsync(role);
             return Ok(role);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoleAsync(int id, [FromBody] RoleModel role)
+        public async Task<IActionResult> UpdateRoleAsync(ObjectId id, [FromBody] RoleModel role)
         {
             if (role == null || role.Id != id)
             {
-                return BadRequest("Role ID mismatch.");
+                return BadRequest("Role Não existe");
             }
 
-            var existingRole = await _roleService.GetRoleByIdAsync(id);
+            var existingRole = await _roleService.GetByIdAsync(id);
             if (existingRole == null)
             {
                 return NotFound();
             }
 
-            await _roleService.UpdateRoleAsync(role);
+            await _roleService.UpdateAsync(id, role);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoleAsync(int id)
+        public async Task<IActionResult> DeleteRoleAsync(ObjectId id)
         {
-            var role = await _roleService.GetRoleByIdAsync(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
             }
 
-            await _roleService.DeleteRoleAsync(id);
+            await _roleService.DeleteAsync(id);
             return NoContent();
         }
     }

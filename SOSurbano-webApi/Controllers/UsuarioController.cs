@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using SosUrbano.Application.DTOs;
 using SOSurbano_webApi.Model;
@@ -6,6 +7,7 @@ using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -17,17 +19,19 @@ namespace SOSurbano_webApi.Controllers
             _usuarioService = usuarioService;
         }
 
+        [Authorize(Roles = "1")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsuariosAsync()
         {
-            var usuarios = await _usuarioService.GetAllUsuariosAsync();
+            var usuarios = await _usuarioService.GetAllAsync();
             return Ok(usuarios);
         }
 
+        [Authorize(Roles = "1")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUsuarioByIdAsync(ObjectId id)
         {
-            var usuario = await _usuarioService.GetUsuarioByIdAsync(id);
+            var usuario = await _usuarioService.GetByIdAsync(id);
             if (usuario == null)
             {
                 return NotFound();
@@ -44,26 +48,39 @@ namespace SOSurbano_webApi.Controllers
                 return BadRequest("User cannot be null.");
             }
 
-            await _usuarioService.UserRegisterAsync(usuario);
+            var novoUsuario = new UsuarioModel
+            {
+                Id = ObjectId.GenerateNewId(),
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                CPF = usuario.CPF,
+                DataNascimento = usuario.DataNascimento,
+                Senha = usuario.Senha,
+                CellPhone = usuario.CellPhone,
+                RoleId = usuario.RoleId,
+                Ativo = usuario.Ativo
+            };
+
+            await _usuarioService.AddAsync(novoUsuario);
             return Ok(usuario);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUsuarioAsync(int id, [FromBody] UsuarioModel usuario)
+        public async Task<IActionResult> UpdateUsuarioAsync(ObjectId id, [FromBody] UsuarioModel usuario)
         {
             if (usuario == null)
             {
                 return BadRequest("Invalid data.");
             }
 
-            await _usuarioService.UpdateUsuarioAsync(usuario);
+            await _usuarioService.UpdateAsync(id, usuario);
             return NoContent();
         }
-
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuarioAsync(ObjectId id)
         {
-            await _usuarioService.DeleteUsuarioAsync(id);
+            await _usuarioService.DeleteAsync(id);
             return NoContent();
         }
     }

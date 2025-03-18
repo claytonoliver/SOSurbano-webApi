@@ -5,10 +5,10 @@ namespace SOSurbano_webApi.Services.Interfaces
 {
     public interface IChamadoService
     {
-        Task<ChamadoModel> GetChamadoByIdAsync(ObjectId id);
-        Task<IEnumerable<ChamadoModel>> GetAllChamadosAsync();
-        Task AddChamadoAsync(ChamadoModel chamado);
-        Task UpdateChamadoAsync(ChamadoModel chamado);
-        Task DeleteChamadoAsync(ObjectId id);
+        Task AddAsync(ChamadoModel chamado);
+        Task DeleteAsync(ObjectId id);
+        Task<IEnumerable<ChamadoModel>> GetAllAsync();
+        Task<ChamadoModel> GetByIdAsync(ObjectId id);
+        Task UpdateAsync(ObjectId id, ChamadoModel chamado);
     }
 }

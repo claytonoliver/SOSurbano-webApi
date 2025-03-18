@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using SosUrbano.Domain.Entities;
 using SosUrbano.Infraestructure.Data;
 using SOSurbano_webApi.Data.Context;
@@ -9,40 +12,36 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Configuração de Serviços
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
-
-//builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-//builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
-//builder.Services.AddScoped<IVeiculoRepository, VeiculoRepository>();
-//builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-//builder.Services.AddScoped<ITipoDeOcorrenciaRepository, TipoDeOcorrenciaRepository>();
-//builder.Services.AddScoped<IStatusServiceRepository, StatusServicoRepository>();
-//builder.Services.AddScoped<IStatusChamadoRepository, StatusChamadoRepository>();
-//builder.Services.AddScoped<IHistoricoServicoStatusRepository, HistoricoServicoStatusRepository>();
-//builder.Services.AddScoped<IHistoricoOcorrenciaRepository, HistoricoOcorrenciaRepository>();
-//builder.Services.AddScoped<IChamadoRepository, ChamadoRepository>();
-//builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.Configure<JwtSettingsModel>(builder.Configuration.GetSection("JwtSettings"));
-#region DbConnection
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDb"));
+
+// Criando e registrando o cliente do MongoDB
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    var settings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>();
+    return new MongoClient(settings.ConnectionString);
+});
+
+// Registrando o banco de dados
+builder.Services.AddScoped<IMongoDatabase>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    return sp.GetRequiredService<IMongoClient>().GetDatabase(settings.DataBaseName);
+});
+
+// Registrando o contexto do MongoDB
 builder.Services.AddSingleton<MongoDbContext>();
-#endregion
 
 
-
-
+//Registro de Dependências (Services e Repositories)
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<ITipoDeOcorrenciaService, TipoDeOcorrenciaService>();
 builder.Services.AddScoped<IStatusServicoService, StatusServicoService>();
@@ -51,10 +50,12 @@ builder.Services.AddScoped<IHistoricoServicoStatusService, HistoricoServicoStatu
 builder.Services.AddScoped<IHistoricoOcorrenciaService, HistoricoOcorrenciaService>();
 builder.Services.AddScoped<IChamadoService, ChamadoService>();
 
+// Registro da Configuração do JWT
+builder.Services.Configure<JwtSettingsModel>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtSettingsModel>>().Value);
 
-// Configura��o do JWT
-
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettingsModel>();
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettingsModel>()
+                   ?? throw new Exception("JWT Settings not found");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -62,21 +63,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(jwtSettings.Secret)),
             ValidateIssuer = true,
             ValidIssuer = jwtSettings.Issuer,
             ValidateAudience = true,
             ValidAudience = jwtSettings.Audience,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.Zero //Evita aceitar tokens expirados com margem de erro
         };
     });
 
-
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuração do Pipeline de Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -85,6 +84,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // DEVE vir antes de UseAuthorization()
 app.UseAuthorization();
 
 app.MapControllers();

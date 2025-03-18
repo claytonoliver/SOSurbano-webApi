@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
     public class GeneroController : ControllerBase
@@ -20,7 +22,7 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllGenerosAsync()
         {
-            var generos = await _generoService.GetAllGenerosAsync();
+            var generos = await _generoService.GetAllAsync();
             return Ok(generos);
         }
 
@@ -28,7 +30,7 @@ namespace SOSurbano_webApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGeneroByIdAsync(ObjectId id)
         {
-            var genero = await _generoService.GetGeneroByIdAsync(id);
+            var genero = await _generoService.GetByIdAsync(id);
             if (genero == null)
             {
                 return NotFound();
@@ -44,7 +46,7 @@ namespace SOSurbano_webApi.Controllers
                 return BadRequest("Genero cannot be null.");
             }
 
-            await _generoService.AddGeneroAsync(genero);
+            await _generoService.AddAsync(genero);
             return Ok(genero);
         }
 
@@ -56,26 +58,26 @@ namespace SOSurbano_webApi.Controllers
                 return BadRequest("Genero is null or id mismatch.");
             }
 
-            var existingGenero = await _generoService.GetGeneroByIdAsync(id);
+            var existingGenero = await _generoService.GetByIdAsync(id);
             if (existingGenero == null)
             {
                 return NotFound();
             }
 
-            await _generoService.UpdateGeneroAsync(genero);
+            await _generoService.UpdateAsync(id, genero);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGeneroAsync(ObjectId id)
         {
-            var genero = await _generoService.GetGeneroByIdAsync(id);
+            var genero = await _generoService.GetByIdAsync(id);
             if (genero == null)
             {
                 return NotFound();
             }
 
-            await _generoService.DeleteGeneroAsync(id);
+            await _generoService.DeleteAsync(id);
             return NoContent();
         }
     }

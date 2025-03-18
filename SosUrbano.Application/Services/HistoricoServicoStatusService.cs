@@ -1,33 +1,15 @@
-﻿using SOSurbano_webApi.Model;
+﻿using MongoDB.Driver;
+using SosUrbano.Application.Services;
+using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Services
 {
-    public class HistoricoServicoStatusService : IHistoricoServicoStatusService
+    public class HistoricoServicoStatusService : BaseMongoService<HistoricoServicoStatusModel>, IHistoricoServicoStatusService
     {
-        public Task AddHistoricoServicoStatusAsync(HistoricoServicoStatusModel historicoServicoStatus)
+        public HistoricoServicoStatusService(IMongoDatabase database) : base(database, "SOU_HISTORICO_STATUS_SERVICO")
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteHistoricoServicoStatusAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<HistoricoServicoStatusModel>> GetAllHistoricoServicoStatusAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HistoricoServicoStatusModel> GetHistoricoServicoStatusByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateHistoricoServicoStatusAsync(HistoricoServicoStatusModel historicoServicoStatus)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

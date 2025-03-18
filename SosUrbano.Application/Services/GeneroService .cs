@@ -1,34 +1,15 @@
-﻿using MongoDB.Bson;
+﻿using MongoDB.Driver;
+using SosUrbano.Application.Services;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
 namespace SOSurbano_webApi.Services
 {
-    public class GeneroService : IGeneroService
+    public class GeneroService : BaseMongoService<GeneroModel>, IGeneroService
     {
-        public Task AddGeneroAsync(GeneroModel genero)
+        public GeneroService(IMongoDatabase database) : base(database, "SOU_Genero")
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteGeneroAsync(ObjectId id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<GeneroModel>> GetAllGenerosAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<GeneroModel> GetGeneroByIdAsync(ObjectId id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateGeneroAsync(GeneroModel genero)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -8,17 +8,17 @@ namespace SOSurbano_webApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IUsuarioService _usuarioService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IUsuarioService usuarioService)
         {
-            _authService = authService;
+            _usuarioService = usuarioService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] RequestLoginDTO UsuarioLogin)
         {
-            var Token = await _authService.Authenticate(UsuarioLogin);
+            var Token = await _usuarioService.Authenticate(UsuarioLogin);
             if (Token == null)
             {
                 return Unauthorized();
