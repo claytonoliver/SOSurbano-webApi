@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using SosUrbano.Application.DTOs;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
@@ -24,7 +25,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuarioByIdAsync(int id)
+        public async Task<IActionResult> GetUsuarioByIdAsync(ObjectId id)
         {
             var usuario = await _usuarioService.GetUsuarioByIdAsync(id);
             if (usuario == null)
@@ -36,21 +37,21 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUsuarioAsync([FromBody] UsuarioModel usuario)
+        public async Task<IActionResult> UserRegistration([FromBody] RequestUserRegistrationDto usuario)
         {
             if (usuario == null)
             {
                 return BadRequest("User cannot be null.");
             }
 
-            await _usuarioService.AddUsuarioAsync(usuario);
+            await _usuarioService.UserRegisterAsync(usuario);
             return Ok(usuario);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUsuarioAsync(int id, [FromBody] UsuarioModel usuario)
         {
-            if (usuario == null || usuario.Id != id)
+            if (usuario == null)
             {
                 return BadRequest("Invalid data.");
             }
@@ -60,7 +61,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuarioAsync(int id)
+        public async Task<IActionResult> DeleteUsuarioAsync(ObjectId id)
         {
             await _usuarioService.DeleteUsuarioAsync(id);
             return NoContent();

@@ -1,66 +1,30 @@
-﻿
-using Fiap.Web.Alunos.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using SOSurbano_webApi.Model;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
+using SosUrbano.Application.DTOs;
+using SOSurbano_webApi.Services.Interfaces;
 
-namespace Fiap.Web.Alunos.Controllers
+namespace SOSurbano_webApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController()
+        public AuthController(IAuthService authService)
         {
-            _authService = new AuthService(); // Em um cenário real, isso deve ser injetado via DI
+            _authService = authService;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UsuarioModel user)
+        public async Task<IActionResult> Login([FromBody] RequestLoginDTO UsuarioLogin)
         {
-            var authenticatedUser = _authService.Authenticate(user.Nome, user.Senha);
-            if (authenticatedUser == null)
+            var Token = await _authService.Authenticate(UsuarioLogin);
+            if (Token == null)
             {
                 return Unauthorized();
             }
 
-            var token = GenerateJwtToken(authenticatedUser);
-            return Ok(new { Token = token });
-        }
-
-
-        private string GenerateJwtToken(UsuarioModel user)
-        {
-
-            byte[] secret = Encoding.ASCII.GetBytes("f+ujXAKHk00L5jlMXo2XhAWawsOoihNP1OiAM25lLSO57+X7uBMQgwPju6yzyePi");
-            var securityKey = new SymmetricSecurityKey(secret);
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
-            SecurityTokenDescriptor securityTokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Nome),
-                    new Claim(ClaimTypes.Role, user.Role.Nome),
-                    new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
-                Issuer = "fiap",
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(secret),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
-
-            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+            return Ok(new { Token = Token });
         }
     }
 }

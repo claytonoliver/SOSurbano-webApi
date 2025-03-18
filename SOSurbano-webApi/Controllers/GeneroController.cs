@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using SOSurbano_webApi.Model;
 using SOSurbano_webApi.Services.Interfaces;
 
@@ -25,7 +26,7 @@ namespace SOSurbano_webApi.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGeneroByIdAsync(int id)
+        public async Task<IActionResult> GetGeneroByIdAsync(ObjectId id)
         {
             var genero = await _generoService.GetGeneroByIdAsync(id);
             if (genero == null)
@@ -48,7 +49,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGeneroAsync(int id, [FromBody] GeneroModel genero)
+        public async Task<IActionResult> UpdateGeneroAsync(ObjectId id, [FromBody] GeneroModel genero)
         {
             if (genero == null || genero.Id != id)
             {
@@ -66,7 +67,7 @@ namespace SOSurbano_webApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGeneroAsync(int id)
+        public async Task<IActionResult> DeleteGeneroAsync(ObjectId id)
         {
             var genero = await _generoService.GetGeneroByIdAsync(id);
             if (genero == null)
