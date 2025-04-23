@@ -1,0 +1,5 @@
+services:
+  webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - MongoDb__ConnectionString=mongodb+srv://SosUrbanoService:u7Q5iMQTkbie3jkc@cluster0.uz256.mongodb.net/
