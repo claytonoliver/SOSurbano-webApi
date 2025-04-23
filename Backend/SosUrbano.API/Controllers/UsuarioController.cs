@@ -85,5 +85,6 @@ namespace SOSurbano_webApi.Controllers
             await _usuarioService.DeleteAsync(id);
             return NoContent();
         }
+
     }
 }
