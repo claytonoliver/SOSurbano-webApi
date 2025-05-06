@@ -64,7 +64,7 @@ namespace SOSurbano_webApi.Controllers
             };
 
             await _usuarioService.AddAsync(novoUsuario);
-            return Ok(usuario);
+            return StatusCode(StatusCodes.Status201Created);
         }
         [Authorize]
         [HttpPut("{id}")]
