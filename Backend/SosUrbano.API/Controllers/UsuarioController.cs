@@ -63,9 +63,25 @@ namespace SOSurbano_webApi.Controllers
                 Genero = usuario.Genero
             };
 
-            await _usuarioService.AddAsync(novoUsuario);
-            return StatusCode(StatusCodes.Status201Created);
+            var usuarios = _usuarioService.GetAllAsync();
+
+            var usuarioExistente = usuarios.Result
+                .FirstOrDefault(u => u.Email == novoUsuario.Email || u.CPF == novoUsuario.CPF);
+
+            if (usuarioExistente != null)
+            {
+                await _usuarioService.AddAsync(novoUsuario);
+                return StatusCode(StatusCodes.Status201Created, new { id = novoUsuario.Id.ToString() });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status409Conflict, new { message = "Usuario ja existe" });
+            }
+               
+            
         }
+
+
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUsuarioAsync(ObjectId id, [FromBody] UsuarioModel usuario)

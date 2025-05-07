@@ -1,10 +1,13 @@
 ﻿using SosUrbano.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace SosUrbano.Application.DTOs
 {
     public class RequestUserRegistrationDto
     {
         public string Nome { get; set; } = string.Empty;
+        [EmailAddress]
+        [Required]
         public string Email { get; set; } = string.Empty;
         public string CPF { get; set; } = string.Empty;
         public DateTime DataNascimento { get; set; }

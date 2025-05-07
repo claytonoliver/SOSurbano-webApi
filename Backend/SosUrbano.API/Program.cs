@@ -20,6 +20,11 @@ namespace SOSurbano_webApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(o =>
+            {
+                o.AddServerHeader = false;
+            });
+
             // Configuração de Serviços
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -70,6 +75,7 @@ namespace SOSurbano_webApi
                 });
 
             var app = builder.Build();
+
 
             if (app.Environment.IsDevelopment())
             {

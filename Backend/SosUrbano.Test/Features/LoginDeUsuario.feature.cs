@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SosUrbano.Test.Features
+namespace SosUrbano.Test.Features.Auth
 {
     using Reqnroll;
     using System;
@@ -20,17 +20,17 @@ namespace SosUrbano.Test.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("RegisterUser")]
-    public partial class RegisterUserFeature
+    [NUnit.Framework.DescriptionAttribute("Login de usuário")]
+    public partial class LoginDeUsuarioFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features", "RegisterUser", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features/Auth", "Login de usuário", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "RegisterUser.feature"
+#line 1 "LoginDeUsuario.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -82,16 +82,16 @@ namespace SosUrbano.Test.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Usuário se registra com sucesso")]
-        [NUnit.Framework.CategoryAttribute("tag1")]
-        public async System.Threading.Tasks.Task UsuarioSeRegistraComSucesso()
+        [NUnit.Framework.DescriptionAttribute("Usuário realiza login com sucesso")]
+        [NUnit.Framework.CategoryAttribute("tag")]
+        public async System.Threading.Tasks.Task UsuarioRealizaLoginComSucesso()
         {
             string[] tagsOfScenario = new string[] {
-                    "tag1"};
+                    "tag"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Usuário se registra com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Usuário realiza login com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
-this.ScenarioInitialize(scenarioInfo);
+  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -101,13 +101,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 6
-    await testRunner.GivenAsync("que estou na API de registro de usuários", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+    await testRunner.GivenAsync("que estou com credenciais válidas", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 7
-    await testRunner.WhenAsync("envio os dados válidos de um novo usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("envio uma requisição de login com as credenciais válidas", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 8
-    await testRunner.ThenAsync("o sistema deve retornar status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+    await testRunner.ThenAsync("o sistema deve retornar status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 9
+    await testRunner.AndAsync("o corpo da resposta deve conter o token JWT", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line hidden
+#line 10
+    await testRunner.AndAsync("a resposta deve seguir o contrato do login", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
