@@ -11,6 +11,7 @@ O projeto está organizado nas seguintes camadas, seguindo os princípios da **C
 - **SosUrbano.Application**: Contém a lógica de aplicação e os casos de uso.
 - **SosUrbano.Domain**: Define as entidades e interfaces de repositório.
 - **SosUrbano.Infraestructure**: Implementa os repositórios e a comunicação com o banco de dados MongoDB.
+- **SosUrbano.Tests**: Implementa os testes de endpoints que tem interação direta com usuário.
 
 ## Collections Utilizadas
 Foram criadas as seguintes collections no **MongoDB**:
