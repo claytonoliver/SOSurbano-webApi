@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SosUrbano.API", "Backend\So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SosUrbano.Infrastructure", "Backend\SosUrbano.Infrastructure\SosUrbano.Infrastructure.csproj", "{19661383-3DFE-2C18-51DD-543A15A13F87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SosUrbano.Test", "Backend\SosUrbano.Test\SosUrbano.Test.csproj", "{938EFC50-041F-4C82-B28D-D0A3D606AB49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{19661383-3DFE-2C18-51DD-543A15A13F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19661383-3DFE-2C18-51DD-543A15A13F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19661383-3DFE-2C18-51DD-543A15A13F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938EFC50-041F-4C82-B28D-D0A3D606AB49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938EFC50-041F-4C82-B28D-D0A3D606AB49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938EFC50-041F-4C82-B28D-D0A3D606AB49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938EFC50-041F-4C82-B28D-D0A3D606AB49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{C57A21A1-3C8D-473C-CF9A-6B82164017BC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5CBEEDC7-12C7-250C-6ECF-E2FBC71BF00C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{19661383-3DFE-2C18-51DD-543A15A13F87} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{938EFC50-041F-4C82-B28D-D0A3D606AB49} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1389BC4-70B2-4833-B021-5FBBD6DFCFEB}

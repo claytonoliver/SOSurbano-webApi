@@ -53,7 +53,7 @@ namespace SOSurbano_webApi.Controllers
             };
 
             await _chamadoService.AddAsync(novoChamado);
-            return Created("Chamado Criado", chamado);
+            return Created("Chamado Criado", new {Id = novoChamado.Id.ToString()});
         }
 
         [HttpPut("{id}")]
