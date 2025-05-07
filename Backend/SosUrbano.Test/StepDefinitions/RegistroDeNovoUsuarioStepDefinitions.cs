@@ -45,13 +45,13 @@ namespace SosUrbano.Test.StepDefinitions
             _response = await _client.PostAsJsonAsync("/api/usuario", _usuarioPayload);
         }
 
-        [Then("o sistema deve retornar status {int} CREATED")]
+        [Then("o sistema precisa retornar status {int} CREATED")]
         public void ThenOSistemaDeveRetornarStatusOK(int status)
         {
             ((int)_response.StatusCode).Should().Be(status);
         }
 
-        [Then("o corpo da resposta deve conter o ID do novo usuário")]
+        [Then("o corpo da resposta precisa conter o ID do novo usuário")]
         public async Task ThenOCorpoDaRespostaDeveConterOIDDoNovoUsuario()
         {
             var json = await _response.Content.ReadAsStringAsync();
@@ -79,7 +79,7 @@ namespace SosUrbano.Test.StepDefinitions
             };
         }
 
-        [Then("o sistema deve retornar status {int} Bad Request")]
+        [Then("o sistema precisa retornar status {int} Bad Request")]
         public void ThenOSistemaDeveRetornarStatusBadRequest(int status)
         {
             ((int)_response.StatusCode).Should().Be(status);
@@ -123,7 +123,7 @@ namespace SosUrbano.Test.StepDefinitions
             };
         }
 
-        [Then("o sistema deve retornar status {int} Conflict")]
+        [Then("o sistema precisa retornar status {int} Conflict")]
         public void ThenOSistemaDeveRetornarStatusConflict(int status)
         {
             ((int)_response.StatusCode).Should().Be(status);

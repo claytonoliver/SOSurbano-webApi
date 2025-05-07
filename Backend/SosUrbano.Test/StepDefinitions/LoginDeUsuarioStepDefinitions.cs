@@ -1,11 +1,8 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Reqnroll;
-using SOSurbano_webApi;
-using SosUrbano.Test.Models;
-using SosUrbano.Test.Dto;
 using Json.Schema;
-using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
+using SosUrbano.Test.Dto;
+using SOSurbano_webApi;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 
@@ -41,7 +38,7 @@ namespace SosUrbano.Test.StepDefinitions
             _response = await _client.PostAsJsonAsync("/api/auth/login", _loginPayload);
         }
 
-        [Then("o sistema deve retornar status {int} OK")]
+        [Then("o sistema tem que retornar status {int} OK")]
         public void ThenOSistemaDeveRetornarStatus200OK(int statusCode)
         {
             ((int)_response.StatusCode).Should().Be(statusCode);
@@ -58,7 +55,7 @@ namespace SosUrbano.Test.StepDefinitions
         public async Task ThenARespostaDeveSeguirOContratoDoLogin()
         {
             var content = await _response.Content.ReadAsStringAsync();
-            var jsonNode = JsonNode.Parse(content); // CORREÇÃO AQUI!
+            var jsonNode = JsonNode.Parse(content);
 
             var schema = new JsonSchemaBuilder()
                 .Type(SchemaValueType.Object)

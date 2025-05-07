@@ -20,17 +20,17 @@ namespace SosUrbano.Test.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Login de usuário")]
-    public partial class LoginDeUsuarioFeature
+    [NUnit.Framework.DescriptionAttribute("Chamado")]
+    public partial class ChamadoFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features", "Login de usuário", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features", "Chamado", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "LoginDeUsuario.feature"
+#line 1 "Chamado.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -82,16 +82,14 @@ namespace SosUrbano.Test.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Usuário realiza login com sucesso")]
-        [NUnit.Framework.CategoryAttribute("tag")]
-        public async System.Threading.Tasks.Task UsuarioRealizaLoginComSucesso()
+        [NUnit.Framework.DescriptionAttribute("Criar um novo chamado com sucesso")]
+        public async System.Threading.Tasks.Task CriarUmNovoChamadoComSucesso()
         {
-            string[] tagsOfScenario = new string[] {
-                    "tag"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Usuário realiza login com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Criar um novo chamado com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -101,19 +99,22 @@ namespace SosUrbano.Test.Features
             {
                 await this.ScenarioStartAsync();
 #line 6
-    await testRunner.GivenAsync("que estou com credenciais válidas", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+  await testRunner.GivenAsync("que estou autenticado como administrador", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 7
- await testRunner.WhenAsync("envio uma requisição de login com as credenciais válidas", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+  await testRunner.AndAsync("tenho os dados válidos de um novo chamado", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
 #line 8
-    await testRunner.ThenAsync("o sistema tem que retornar status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+  await testRunner.WhenAsync("Quando envio uma requisição POST para /api/chamado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 9
-    await testRunner.AndAsync("o corpo da resposta deve conter o token JWT", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+  await testRunner.ThenAsync("o sistema deve retornar status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 10
-    await testRunner.AndAsync("a resposta deve seguir o contrato do login", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+  await testRunner.AndAsync("o corpo da resposta deve conter o ID do chamado", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line hidden
+#line 11
+  await testRunner.AndAsync("a resposta deve seguir o contrato do chamado", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

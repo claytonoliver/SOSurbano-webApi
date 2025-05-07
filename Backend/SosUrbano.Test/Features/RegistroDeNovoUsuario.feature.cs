@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SosUrbano.Test.Features.Usuario
+namespace SosUrbano.Test.Features
 {
     using Reqnroll;
     using System;
@@ -28,7 +28,7 @@ namespace SosUrbano.Test.Features.Usuario
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features/Usuario", "Registro de novo usuário", "  Como um visitante da API\r\n  Quero registrar novos usuários\r\n  Para que possam a" +
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt"), "Features", "Registro de novo usuário", "  Como um visitante da API\r\n  Quero registrar novos usuários\r\n  Para que possam a" +
                 "cessar o sistema", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "RegistroDeNovoUsuario.feature"
@@ -108,10 +108,10 @@ namespace SosUrbano.Test.Features.Usuario
     await testRunner.WhenAsync("envio uma requisição para a API de registro de usuários", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 11
-    await testRunner.ThenAsync("o sistema deve retornar status 201 CREATED", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+    await testRunner.ThenAsync("o sistema precisa retornar status 201 CREATED", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 12
-    await testRunner.AndAsync("o corpo da resposta deve conter o ID do novo usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+    await testRunner.AndAsync("o corpo da resposta precisa conter o ID do novo usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -141,7 +141,7 @@ namespace SosUrbano.Test.Features.Usuario
     await testRunner.WhenAsync("envio uma requisição para a API de registro de usuários", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 17
-    await testRunner.ThenAsync("o sistema deve retornar status 400 Bad Request", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+    await testRunner.ThenAsync("o sistema precisa retornar status 400 Bad Request", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -174,7 +174,7 @@ namespace SosUrbano.Test.Features.Usuario
     await testRunner.WhenAsync("envio uma requisição para a API de registro de usuários", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 23
-    await testRunner.ThenAsync("o sistema deve retornar status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+    await testRunner.ThenAsync("o sistema precisa retornar status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
